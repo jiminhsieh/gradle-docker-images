@@ -1,0 +1,29 @@
+language: bash
+services: docker
+
+env:
+  - JVM=openj9  JVM_MAJOR=8 JVM_MINOR=162 GRADLE_VERSION=4.5.1
+  - JVM=openj9  JVM_MAJOR=8 JVM_MINOR=162 GRADLE_VERSION=4.5.1
+  - JVM=zulu    JVM_MAJOR=8 JVM_MINOR=162 GRADLE_VERSION=4.5.1
+  - JVM=zulu    JVM_MAJOR=8 JVM_MINOR=162 GRADLE_VERSION=4.5.1
+
+
+before_script:
+  - git clone https://github.com/docker-library/official-images.git ~/official-images
+  - env | sort
+  - cd ${JVM}_${JVM_MAJOR}
+  - version_array=(${GRADLE_VERSION//./ })
+  - IMAGE_NAME="jiminhsieh/gradle:${JVM}_${JVM_MAJOR}-${version_array[0]}.${version_array[1]}.x"
+  - IMAGE_FULL_NAME="jiminhsieh/gradle:${JVM}_${JVM_MAJOR}u${JVM_MINOR}-${GRADLE_VERSION}"
+
+script:
+  - travis_retry docker build -t ${IMAGE_FULL_NAME} --build-arg jvm_major=${JVM_MAJOR} --build-arg jvm_minor=${JVM_MINOR} --build-arg gradle=${GRADLE_VERSION} .
+  - ~/official-images/test/run.sh ${IMAGE_FULL_NAME}
+  - docker run ${IMAGE_FULL_NAME} java -version && docker run ${IMAGE_FULL_NAME} gradle -v
+
+after_success:
+  - docker tag ${IMAGE_FULL_NAME} ${IMAGE_NAME}
+  - docker images
+  - docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}
+  - docker push ${IMAGE_NAME}
+  - docker push ${IMAGE_FULL_NAME}
