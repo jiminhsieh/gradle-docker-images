@@ -4,6 +4,7 @@ services: docker
 env:
   - JVM=openj9  JVM_MAJOR=8 JVM_MINOR=162 GRADLE_VERSION=4.7
   - JVM=zulu    JVM_MAJOR=8 JVM_MINOR=162 GRADLE_VERSION=4.7
+  - JVM=zulu    JVM_MAJOR=9 JVM_MINOR=04  GRADLE_VERSION=4.7
 
 
 before_script:
