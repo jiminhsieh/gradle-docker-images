@@ -9,7 +9,7 @@ env:
 before_script:
   - git clone https://github.com/docker-library/official-images.git ~/official-images
   - env | sort
-  - cd ${JVM}_${JVM_MAJOR}
+  - cd ${JVM}
   - version_array=(${GRADLE_VERSION//./ })
   - IMAGE_NAME="jiminhsieh/gradle:${JVM}_${JVM_MAJOR}-${version_array[0]}.${version_array[1]}.x"
   - IMAGE_FULL_NAME="jiminhsieh/gradle:${JVM}_${JVM_MAJOR}u${JVM_MINOR}-${GRADLE_VERSION}"
