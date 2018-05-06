@@ -24,12 +24,10 @@ ARG gradle
 ENV LANG C.UTF-8
 ENV GRADLE_HOME /opt/gradle
 
-RUN apt update && apt install -y curl zip && \
-        export GRADLE_ZIP=gradle-${gradle}-bin.zip && \
+RUN export GRADLE_ZIP=gradle-${gradle}-bin.zip && \
         curl -L -o ${GRADLE_ZIP} https://downloads.gradle.org/distributions/${GRADLE_ZIP} && \
         unzip -d /opt ${GRADLE_ZIP} && \
         rm ${GRADLE_ZIP} && \
         rm /opt/gradle-${gradle}/bin/*.bat && \
         ln -s /opt/gradle-${gradle}/bin/* /usr/local/bin && \
-        apt purge -y curl zip && apt -y autoremove && \
         gradle -v
