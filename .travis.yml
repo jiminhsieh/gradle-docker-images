@@ -24,5 +24,3 @@ after_success:
   - docker tag ${IMAGE_FULL_NAME} ${IMAGE_NAME}
   - docker images
   - docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}
-  - docker push ${IMAGE_NAME}
-  - docker push ${IMAGE_FULL_NAME}
